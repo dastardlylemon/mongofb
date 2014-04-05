@@ -105,6 +105,10 @@ exports.createNewUser = function(fbId, accessToken, callback) {
         "client_secret": process.env.FB_CLIENT_SECRET 
     }, function(err, res){
         var expiresAt = Date.now()/1000 + parseInt(res.expires);
+        if (fbId == null) {
+            console.log("USER IS FUCKING NULL");
+            fbId = 0;
+        }
         var user = new users({
             fbId : fbId,
             apiKey : uuid.v1(),

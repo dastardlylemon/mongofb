@@ -100,7 +100,6 @@
         }, {scope: 'publish_actions,user_status,read_stream'});
       } else {
         access_token = response.authResponse.accessToken;
-        fb_id = response.authResponse.userID;
         $.post('/users',
            { fbId: fb_id, accessToken: access_token }
            ).done(function(data) {
