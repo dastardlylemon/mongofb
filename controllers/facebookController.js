@@ -197,8 +197,8 @@ function update(queryObj, callback) {
   //gonna count some braces
 
   args = JSON.parse(args);
-  findArgs = args.find;
-  replaceArgs = args.replace;
+  findArgs = JSON.stringify(args.find);
+  replaceArgs = JSON.stringify(args.replace);
 
   var findObj = {
     collection: collection,
@@ -332,6 +332,6 @@ exports.queryHelper = function(req, res, next) {
     req.queryObj["apiKey"] = req.query.api_key;
 	command_helper(req.queryObj, function(success) {
 		res.json(success);
-		next();
+		//next();
 	});
 }
