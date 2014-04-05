@@ -190,7 +190,21 @@ function save(queryObj, callback) {
 }
 
 function remove(queryObj, callback) {
-	return callback("insert");
+	console.log("insert");
+  var collection = queryObj["collection"];
+  var apiKey = queryObj["apiKey"];
+  var token = queryObj["token"];
+  var args = queryObj["args"];
+  find(queryObj, function(comments) {
+    //remove all
+    console.log(comments);
+    for (var i = 0; i < comments.length; i++) {
+      //function deleteObject(token, objectID, callback) 
+      deleteObject(token, comments[i].id, function() {
+        console.log("object deleted");
+      })
+    }
+  });
 }
 
 function drop(queryObj, callback) {
