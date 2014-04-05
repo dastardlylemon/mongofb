@@ -1,17 +1,25 @@
 var graph = require('fbgraph');
 
-exports.getAllCommentsByStatus = function(token, statusID, callback) {
+exports.testFacebook = function(req, res, next) {
+    var statusId = req.statusId;
+    getAllCommentsByStatus(req.accessToken, statusId, function(comments) {
+        console.log(comments);
+    });
+};
+
+//exports.getAllCommentsByStatus = function(token, statusID, callback) {
+function getAllCommentsByStatus(token, statusID, callback) {
   var comments = [];
   graph.setAccessToken(token);
 
-  function retrieveAllCommentsByStatus = function(token, status, callback) {
+  var retrieveAllCommentsByStatus = function(token, status, callback) {
     graph.get("" + status, function(err, data) {
         console.log(data);
         for (var i = 0; i < data.comments.data; i++) {
           comments.push(data.comments.data[i]);
         }
 
-        if (data.comments.paging.next) {
+        if (data.comments.paging && data.comments.paging.next) {
           retrieveAllCommentsByStatus(token, data.comments.paging.next, callback);
         } else {
           callback();

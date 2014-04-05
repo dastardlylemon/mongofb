@@ -6,24 +6,26 @@ exports.createNewUser = function(req, res, next) {
     userModel.createNewUser(fbId, accessToken, function(user){
         // if error, user object is Null
         if (user == null) {
-            console.log("WOW");
             res.jsonp({
-                exists : "User already exists"
+                exists : true
             });
-        } else if (user == undefined) {
+        } else if(user == undefined) {
             res.jsonp({
                 error : "An error occured"
             });
         } else {
-            res.jsonp({
-                apiKey : user.apiKey
-            });
+            var userDetails = {}
+            userDetails.apiKey = user.apiKey;
+            if (user.exists) {
+                userDetails.exists = true;
+            }
+            res.jsonp(userDetails);
         }
     });
 }
 
 exports.retrieveAccessToken = function(req, res, next) {
-    var apiKey = req.apiKey;
+    var apiKey = req.query.api_key;
     userModel.getAccessToken(apiKey, function(accessToken) {
         req.accessToken = accessToken;
         next();
