@@ -119,7 +119,9 @@ function insert(queryObj, callback) {
 	var token = queryObj["token"];
 	var args = queryObj["args"];
 	retrieveStatusId(apiKey, collection, function(statusID) {
+    console.log(statusID);
 		if (!statusID) {
+      console.log("statusID not found")
 			addStatus(apiKey, token, collection, function(res) {
 				addCommentToStatus(token, res.id, args[0], callback);
 			});
