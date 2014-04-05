@@ -8,11 +8,15 @@ exports.createNewUser = function(req, res, next) {
         if (user == null) {
             console.log("WOW");
             res.jsonp({
-                alert : "User already exists"
+                exists : "User already exists"
             });
         } else if (user == undefined) {
             res.jsonp({
-                alert : "An error occured"
+                error : "An error occured"
+            });
+        } else {
+            res.jsonp({
+                apiKey : user.apiKey
             });
         }
     });
