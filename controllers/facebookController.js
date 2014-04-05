@@ -207,12 +207,12 @@ function update(queryObj, callback) {
     args: findArgs
   };
 
-  var replaceObj = {
-    collection: collection,
-    apiKey: apiKey,
-    token: token,
-    args: replaceArgs
-  };
+  // var replaceObj = {
+  //   collection: collection,
+  //   apiKey: apiKey,
+  //   token: token,
+  //   args: replaceArgs
+  // };
 
   console.log(findArgs, replaceArgs);
 
@@ -226,23 +226,12 @@ function update(queryObj, callback) {
       });
       return;
     }
-    callback(comments);
-    // for (var i = 0; i < comments.length; i++) {
-
-    //   try {
-    //           //comments[i].message = comments[i].message.slice(comments[i].message.indexOf('\n'));
-    //           comments[i].message = JSON.parse(toAscii(comments[i].message));
-    //       } catch(e) {
-    //           comments[i].message = {};
-    //       }
-    //   //function deleteObject(token, objectID, callback) 
-    //   // deleteObject(token, comments[i].id, function() {
-    //   //   console.log("object deleted");
-    //   //     callback({
-    //   //         documentUpdated: true
-    //   //     });
-    //   // });
-    // }
+    
+    for (var i = 0; i < comments.length; i++) {
+      //function updateObject(token, objectID, msg, callback) 
+      console.log("replacing object");
+      updateObject(token, comments[i].id, replaceArgs, callback);
+    }
   });
 }
 
