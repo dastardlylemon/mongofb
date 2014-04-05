@@ -1,4 +1,7 @@
 var graph = require('fbgraph');
+var query = require('../controllers/queryHandling');
+
+
 module.exports = function(app) {
 
     //  var queryController = require('../controllers/queryController');
@@ -9,6 +12,8 @@ module.exports = function(app) {
 
     //app.get('/query', queryController.parse, userController.retrieveAccessToken, facebookController.doSomething);
 
-    app.get('/testfacebook', userController.retrieveAccessToken, facebookController.testFacebook);
+    app.get('/testquery', query.tester);
+
+    //app.get('/testfacebook', userController.retrieveAccessToken, facebookController.testFacebook);
 
 }
