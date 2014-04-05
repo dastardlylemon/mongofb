@@ -1,8 +1,3 @@
-function test_callback(first) {
-	console.log(first);
-	return;
-}
-
 function find(query, callback) {
 	return callback("find");
 }
@@ -32,8 +27,22 @@ function parse(query, callback) {
 	}
 	var command = commandArgs[0];
 	var args = commandArgs[1].split(/,/);
+	if (args.length === 1 && args[0] === "") {
+		args = [];
+	}
+	var result = {
+		"command": command,
+		"args": args
+	};
+	return callback(result);
+}
+
+function call_command_with_args(commandArgs, callback) {
+	command = commandArgs["command"];
+	args = commandArgs["args"];
 	switch (command) {
 		case "find": //get all comments
+			return find(args, callback);
 			break;
 		case "insert":
 			break;
@@ -53,4 +62,5 @@ function parse(query, callback) {
 }
 
 parse("db.1234.find()", console.log);
+parse("db.1234.find(oneArg)", console.log);
 parse("db.1234.find(omg, arguments)", console.log);
