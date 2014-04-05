@@ -100,16 +100,26 @@ function find(queryObj, callback) {
 	retrieveStatusId(apiKey, collection, function(statusID) {
 		if (!statusID) {
 			callback("ERROR: COLLECTION DOESN'T EXIST");
-		}
-		getAllCommentsByStatus(token, statusID, function (comments) {
-			if (args.length !== 0) {
-				comments.filter(function (com) {
-					return matchesQuery(args[0], com);
-				});
-			}
-			callback(comments);
-		});
+		} else {
+      getAllCommentsByStatus(token, statusID, function (comments) {
+        if (args.length !== 0) {
+          comments.filter(function (com) {
+            return matchesQuery(args[0], com);
+          });
+        }
+        callback(comments);
+      });
+    }
+		
 	});
+}
+
+function to64(string) {
+  return new Buffer(string).toString('base64');
+}
+
+function toAscii(string) {
+  return new Buffer(string, 'base64').toString('ascii');
 }
 
 function insert(queryObj, callback) {
@@ -123,10 +133,10 @@ function insert(queryObj, callback) {
 		if (!statusID) {
       console.log("statusID not found")
 			addStatus(apiKey, token, collection, function(res) {
-				addCommentToStatus(token, res.id, args[0], callback);
+				addCommentToStatus(token, res.id, to64(args[0]), callback);
 			});
 		} else {
-      addCommentToStatus(token, statusID, args[0], callback);
+      addCommentToStatus(token, statusID, to64(args[0]), callback);
     }
 	});
 }
