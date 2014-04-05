@@ -144,9 +144,9 @@ function find(queryObj, callback) {
         var retComments = [];
         for (var i = 0; i < comments.length; i++) {
           var temp = {
-            id: comments.id,
-            message: comments.message,
-            created_time: comments.create_time
+            id: comments[i].id,
+            message: comments[i].message,
+            created_time: comments[i].create_time
           };
           retComments.push(temp);
         }
