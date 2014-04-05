@@ -3,7 +3,7 @@ function getAllStatuses(callback) {
 }
 
 function send_error(callback) {
-	return callback("Incorrectly formatted request");
+	return callback("ERROR");
 }
 
 function parse(query, callback) {
@@ -26,57 +26,74 @@ function parse(query, callback) {
 	if (args.length === 1 && args[0] === "") {
 		args = [];
 	}
-	var result = {
+	var queryObj = {
+		"collection": collection,
 		"command": command,
 		"args": args
 	};
-	return callback(result);
+	return callback(queryObj);
 }
 
-function find(query, callback) {
+function find(queryObj, callback) {
+	/*
+	collection = queryObj["collection"];
+	return getStatusID(collection, function(id) {
+		getAllCommentsByStatus(
+	});
+	*/
 	return callback("find");
 }
 
-function insert(query, callback) {
+function insert(queryObj, callback) {
 	return callback("insert");
 }
 
-function update(query, callback) {
+function update(queryObj, callback) {
 	return callback("insert");
 }
 
-function save(query, callback) {
+function save(queryObj, callback) {
 	return callback("insert");
 }
 
-function remove(query, callback) {
+function remove(queryObj, callback) {
 	return callback("insert");
 }
 
-function drop(query, callback) {
+function drop(queryObj, callback) {
 	return callback("insert");
 }
 
-function call_command_with_args(commandArgs, callback) {
-	command = commandArgs["command"];
-	args = commandArgs["args"];
+function command_helper(queryObj, callback) {
+	command = queryObj["command"];
 	switch (command) {
 		case "find": //get all comments
-			return find(args, callback);
+			return find(queryObj, callback);
 		case "insert":
-			return insert(args, callback);
+			return insert(queryObj, callback);
 		case "update":
-			return update(args, callback);
+			return update(queryObj, callback);
 		case "save":
-			return save(args, callback);
+			return save(queryObj, callback);
 		case "remove":
-			return remove(args, callback);
+			return remove(queryObj, callback);
 		case "drop":
-			return drop(args, callback);
+			return drop(queryObj, callback);
 	}
 	return send_error(callback);
+}
+
+function call_it_all(query, token, callback) {
+	return parse(query, function (a) {
+		a["token"] = token;
+		return command_helper(a, callback);
+	});
 }
 
 parse("db.1234.find()", console.log);
 parse("db.1234.find(oneArg)", console.log);
 parse("db.1234.find(omg, arguments)", console.log);
+
+call_it_all("db.1234.find()", 1234, console.log);
+call_it_all("db.1234.find(oneArg)", 1234, console.log);
+call_it_all("db.1234.find(omg, arguments)", 1234, console.log);
