@@ -204,13 +204,19 @@ function remove(queryObj, callback) {
     console.log(comments);
     if (comments.length == 0) {
       console.log("nothing to remove");
+      callback({
+          collectionDropped: false
+      });
       return;
     }
     for (var i = 0; i < comments.length; i++) {
       //function deleteObject(token, objectID, callback) 
       deleteObject(token, comments[i].id, function() {
         console.log("object deleted");
-      })
+          callback({
+              collectionDropped: true
+          });
+      });
     }
   });
 }
