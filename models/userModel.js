@@ -22,7 +22,6 @@ var tableModelSchema = new Mongoose.Schema({
     statusID : {
         type : String,
         required : true
-
     }
 })
 
@@ -143,6 +142,8 @@ exports.createNewTable = function(apiKey, tableName, statusID, callback) {
     users.findOne({apiKey:apiKey}, function(err,user) {
         if (err) {
             // TODO: Catch error
+            console.log(err);
+            return;
         }
         var table = new tables({
             tableName : tableName,
@@ -165,13 +166,41 @@ exports.retrieveStatusId = function(apiKey, collectionName, callback) {
     users.findOne({apiKey:apiKey}, function(err, user) {
         if (err) {
             // TODO: catch error
+            console.log(err);
+            return;
         }
         for (var i = 0; i<user.tables.length; i++) {
             if (user.tables[i].tableName == collectionName) {
-                console.log(user.tables[i].statusID);
-                return callback(user.tables[i].statusID); 
+                callback(user.tables[i].statusID);
+                return;
             }
         }
         callback(null);
     }); 
+};
+
+exports.removeCollection = function(apiKey, collectionName, callback) {
+    users.findOne({apiKey:apiKey}, function(err, user) {
+        if (err) {
+            // TODO: catch error
+            console.log(err);
+            callback(true);
+            return;
+        }
+        for (var i = 0; i<user.tables.length; i++) {
+            if (user.tables[i].tableName == collectionName) {
+                var statusID = user.tables[i].statusID;
+                user.tables.pull(user.tables[i]._id);
+                user.save(function(err, res) {
+                    if (err) {
+                        callback(true);
+                        return;
+                    } else {
+                        callback(false,statusID);
+                        return;
+                    }
+                });
+            }
+        }
+    });
 };

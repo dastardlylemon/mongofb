@@ -22,10 +22,11 @@ function parse(query, callback) {
 		return send_error(callback);
 	}
 	var command = commandArgs[0];
-	var args = commandArgs[1].split(/,/);
-	if (args.length === 1 && args[0] === "") {
-		args = [];
-	}
+    var args = commandArgs[1];
+	//var args = commandArgs[1].split(/,/);
+	//if (args.length === 1 && args[0] === "") {
+	//  args = [];
+	//}
 	var queryObj = {
 		"collection": collection,
 		"command": command,
@@ -38,7 +39,7 @@ function parse(query, callback) {
 function call_it_all(query, req, next, callback) {
 	parse(query, function (a) {
 		req.queryObj = a;
-        next();
+      next();
 	});
 }
 
