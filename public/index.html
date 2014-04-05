@@ -44,7 +44,7 @@
         access_token = response.authResponse.accessToken;
         fb_id = response.authResponse.userID;
         $.post('/users',
-               {fbId: fb_id, accessToken: access_token}
+               { fbId: fb_id, accessToken: access_token }
               ).done(function(data) {});
       }
     });

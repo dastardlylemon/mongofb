@@ -26,7 +26,7 @@ app.use(allowCrossDomain);
 app.use(app.router);
 app.use(express.limit('50mb'));
 app.use(express.static(path.join(__dirname, 'public')));
-// support for JSON-encoded bodies and URL-encoded bodies 
+// support for JSON-encoded bodies and URL-encoded bodies
 app.use(express.json());
 app.use(express.urlencoded());
 
@@ -35,7 +35,7 @@ app.use(express.urlencoded());
 //  app.use(express.errorHandler());
 //}
 
-//require('./routes/routes')(app);
+require('./routes/routes')(app);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
