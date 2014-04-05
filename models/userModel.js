@@ -13,6 +13,20 @@ db.once('open', function() {
 var mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost/mydb';
 Mongoose.connect(mongoUri);
 
+
+var tableModelSchema = new Mongo.Schema({
+    tableName : {
+        type : String,
+        required : true,
+        unique : true
+    },
+    statusID : {
+        type : String,
+        required : true
+
+    }
+})
+
 var userModelSchema = new Mongo.Schema({
     fbId : {
         type : String,
@@ -35,8 +49,11 @@ var userModelSchema = new Mongo.Schema({
     machineId : {
         type : String,
         required : true
-    }
+    },
+    tables : [tableModelSchema]
+
 });
+
 
 var users = Mongoose.model('users', userModelSchema); 
 
