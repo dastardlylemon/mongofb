@@ -139,13 +139,8 @@ function insert(queryObj, callback) {
 				addCommentToStatus(token, res.id, to64(args[0]), callback);
 			});
 		} else {
-<<<<<<< HEAD
       addCommentToStatus(token, statusID, to64(args[0]), callback);
     }
-=======
-            addCommentToStatus(token, statusID, args[0], callback);
-        }
->>>>>>> 6f50d8b50909de49b8f23577cdeba82c8d051260
 	});
 }
 
