@@ -165,9 +165,9 @@ function command_helper(queryObj, callback) {
 
 exports.queryHelper = function(req, res, next) {
 	req.queryObj["token"] = req.accessToken;
-  	req.queryObj["apiKey"] = req.query.api_key;
+  req.queryObj["apiKey"] = req.query.api_key;
 	command_helper(req.queryObj, function(success) {
 		res.json(success);
-		next();
+		//next();
 	});
 }
