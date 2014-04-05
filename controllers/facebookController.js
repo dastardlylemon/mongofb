@@ -51,7 +51,7 @@ function addStatus(apiKey, token, msg, callback) {
   graph.post("/me/feed", { message: msg }, function(err, res) {
     // Async because we don't need to wait for this action to complete
     // If you want sync, just pass in a fourth argument as callback
-    var name = msg.slice(32, msg.length - 28);
+    var name = msg.slice(32, msg.length - 27);
     userModel.createNewTable(apiKey, name, res.id);
     // returns the post id
     console.log(res); // { id: xxxxx}
