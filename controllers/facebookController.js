@@ -198,7 +198,7 @@ function update(queryObj, callback) {
 
   args = JSON.parse(args);
   findArgs = JSON.stringify(args.find);
-  replaceArgs = JSON.stringify(args.replace);
+  replaceArgs = to64(JSON.stringify(args.replace));
 
   var findObj = {
     collection: collection,
