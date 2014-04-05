@@ -53,11 +53,91 @@ html, body {
   font-family: 'Montserrat', 'Helvetica', Arial, sans-serif;
 }
 
+button {
+  border: 1px solid #2b355d;
+  background-color: #505fa1;
+  font-family: 'Montserrat', 'Helvetica', Arial, sans-serif;
+  color: #fff;
+  padding: 20px;
+  width: 250px;
+  font-size: 15pt;
+  border-radius: 10px;
+  box-shadow: 0 5px #2b355d;
+  text-shadow: 0 -2px #2b355d;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  left: 50%;
+  margin-left: -125px;
+}
+
+button:hover {
+  background-color: #4f63bd;
+}
+
+button:active {
+  position: relative;
+  top: 2px;
+  box-shadow: 0 3px #2b355d;
+}
+
+#header {
+  background-color: #505fa1;
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 -2px #2b355d;
+  margin-top: -20px;
+}
+
+#header h2 {
+  text-align: center;
+  color: #fff;
+  font-size: 2em;
+  font-family: 'Montserrat', 'Helvetica', Arial, sans-serif;
+}
+
 h1 {
   font-family: 'Fugaz One', sans-serif;
+  color: #fff;
+  font-size: 5em;
 }
 
 h2 {
   text-transform: uppercase;
   font-weight: 700;
+  font-size: 12pt;
+}
+
+#content-desc {
+  width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+#content-desc h2 {
+  font-size: 20pt;
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+h3 {
+  font-weight: 700;
+  font-size: 16pt;
+}
+
+.feature {
+  width: 400px;
+  float: left;
+  padding: 25px;
+}
+
+#content-desc:after {
+  clear: both;
+  content: '';
+  display: table;
 }
