@@ -1,7 +1,7 @@
 var graph = require('fbgraph');
 
 exports.testFacebook = function(req, res, next) {
-    var statusId = req.statusId;
+    var statusId = req.query.status_id;
     getAllCommentsByStatus(req.accessToken, statusId, function(comments) {
         console.log(comments);
     });
