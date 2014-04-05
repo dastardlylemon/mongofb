@@ -1,3 +1,5 @@
+var fbc = require('facebookController.js');
+
 function getAllStatuses(callback) {
 	return callback("getAllStatuses");
 }
@@ -40,12 +42,12 @@ function find(queryObj, callback) {
 	var token = queryObj["token"];
 	var args = queryObj["args"];
 	return getStatusID(collection, function(id) {
-	        function matchesQuery(query, commentObj) {
-			message = commentObj["message"];
+		var matchesQuery = function(query, commentObj) {
+			var message = commentObj["message"];
 			return (message.search(query) !== -1);
 		}
 
-		return getAllCommentsByStatus(token, id, function (comments) {
+		return fbc.getAllCommentsByStatus(token, id, function (comments) {
 			if (args.length !== 0) {
 				comments.filter(function (com) {
 					return matchesQuery(args[0], com);
@@ -59,6 +61,21 @@ function find(queryObj, callback) {
 }
 
 function insert(queryObj, callback) {
+	/*
+	var collection = queryObj["collection"];
+	var token = queryObj["token"];
+	var args = queryObj["args"];
+	return getAllStatuses(function(statuses) {
+		//if collection in statuses, use that status, else create new status
+		statuses.filter(function (status) {
+			return (collection === status);
+		}
+		if (statuses.length !== 0) {
+			return getStatusID(statuses[0], ...);
+		}
+		return createStatus(collection, ...);
+	});
+	*/
 	return callback("insert");
 }
 
