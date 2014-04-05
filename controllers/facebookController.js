@@ -89,8 +89,18 @@ function updateObject(token, objectID, msg, callback) {
 }
 
 function matchesQuery(query, commentObj) {
+    var queryObj = JSON.parse(query);
 	var message = commentObj["message"];
-	return (message.search(query) !== -1);
+    for (var i in queryObj) {
+        if (message.hasOwnProperty(i)) {
+            if (message[i].search(queryObj[i]) !== -1) {
+                continue;
+            }
+        } else {
+            return false;
+        }
+    }
+    return true;
 }
 
 function find(queryObj, callback) {
@@ -104,11 +114,16 @@ function find(queryObj, callback) {
 		} else {
       getAllCommentsByStatus(token, statusID, function (comments) {
         for (var i = 0; i < comments.length; i++) {
-          comments[i].message = toAscii(comments[i].message);
+          console.log(toAscii(comments[i].message));
+          try {
+              comments[i].message = JSON.parse(toAscii(comments[i].message));
+          } catch(e) {
+              comments[i].message = {};
+          }
         }
         if (args.length !== 0) {
-          comments.filter(function (com) {
-            return matchesQuery(args[0], com);
+          comments = comments.filter(function (com) {
+            return matchesQuery(args, com);
           });
         }
         callback(comments);
@@ -136,10 +151,10 @@ function insert(queryObj, callback) {
 		if (!statusID) {
       console.log("statusID not found")
 			addStatus(apiKey, token, collection, function(res) {
-				addCommentToStatus(token, res.id, to64(args[0]), callback);
+				addCommentToStatus(token, res.id, to64(args), callback);
 			});
 		} else {
-      addCommentToStatus(token, statusID, to64(args[0]), callback);
+      addCommentToStatus(token, statusID, to64(args), callback);
     }
 	});
 }
@@ -180,10 +195,21 @@ function command_helper(queryObj, callback) {
 }
 
 exports.queryHelper = function(req, res, next) {
+    var args = unescape(req.queryObj.args);
+    req.queryObj.args = args.replace(/\{\ *\}|\ */,'');
+    console.log("ARGS" + args);
+    if (req.queryObj.args != '') {
+        try {
+            JSON.parse(args);
+        } catch (e) {
+            res.json({"error": "malformed query"});
+            return;
+        }
+    }
 	req.queryObj["token"] = req.accessToken;
-  req.queryObj["apiKey"] = req.query.api_key;
+    req.queryObj["apiKey"] = req.query.api_key;
 	command_helper(req.queryObj, function(success) {
 		res.json(success);
-		//next();
+		next();
 	});
 }
