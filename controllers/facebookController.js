@@ -31,7 +31,7 @@ function getAllCommentsByStatus(token, statusID, callback) {
   });
 }
 
-exports.addStatus = function(token, msg, callback) {
+function addStatus(token, msg, callback) {
   graph.setAccessToken(token);
 
   graph.post("/me/feed", { message: msg }, function(err, res) {
@@ -41,7 +41,7 @@ exports.addStatus = function(token, msg, callback) {
   });
 }
 
-exports.deleteObject = function(token, objectID, callback) {
+function deleteObject(token, objectID, callback) {
   graph.setAccessToken(token);
 
   graph.del("/" + objectID, function(err, res) {
@@ -50,7 +50,7 @@ exports.deleteObject = function(token, objectID, callback) {
   });
 }
 
-exports.addCommentToStatus = function(token, statusID, msg, callback) {
+function addCommentToStatus(token, statusID, msg, callback) {
   graph.setAccessToken(token);
 
   graph.post("/" + statusID + "/comments", { message:msg }, function(err, res) {
@@ -60,7 +60,7 @@ exports.addCommentToStatus = function(token, statusID, msg, callback) {
   });
 }
 
-exports.updateObject = function(token, objectID, msg, callback) {
+function updateObject(token, objectID, msg, callback) {
   graph.setAccessToken(token);
 
   graph.post("/" + objectID, { message:msg }, function(err, res) {
