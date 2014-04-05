@@ -13,13 +13,14 @@ function getAllCommentsByStatus(token, statusID, callback) {
   var comments = [];
 
   var retrieveAllCommentsByStatus = function(token, status, callback) {
+    console.log("retrieve all comments");
     graph.setAccessToken(token);
     try {
         graph.get(status, function(err, data) {
             if (err) {
                 return callback();
             }
-            console.log(data);
+            //console.log(data);
             for (var i = 0; i < data.comments.data.length; i++) {
               comments.push(data.comments.data[i]);
             }
@@ -61,8 +62,8 @@ function addStatus(apiKey, token, msg, callback) {
     var name = msg.slice(32, msg.length - 27);
     userModel.createNewTable(apiKey, name, res.id);
     // returns the post id
-    console.log(res); // { id: xxxxx}
-    console.log("graph post");
+    //console.log(res); // { id: xxxxx}
+    //console.log("graph post");
     return callback(res);
   });
 }
@@ -71,7 +72,7 @@ function deleteObject(token, objectID, callback) {
   graph.setAccessToken(token);
 
   graph.del("/" + objectID, function(err, res) {
-    console.log(res); // {data:true}/{data:false}
+    //console.log(res); // {data:true}/{data:false}
     return callback(res);
   });
 }
@@ -81,7 +82,7 @@ function addCommentToStatus(token, statusID, msg, callback) {
 
   graph.post("/" + statusID + "/comments", { message:msg }, function(err, res) {
     // returns the post id
-    console.log(res); // { id: xxxxx}
+    //console.log(res); // { id: xxxxx}
     return callback(res);
   });
 }
@@ -91,13 +92,14 @@ function updateObject(token, objectID, msg, callback) {
 
   graph.post("/" + objectID, { message:msg }, function(err, res) {
     //returns true/false
+    console.log('update object');
     console.log(res);
     return callback(res);
   });
 }
 
 function matchesQuery(query, commentObj) {
-    var queryObj = JSON.parse(query);
+  var queryObj = JSON.parse(query);
 	var message = commentObj["message"];
     for (var i in queryObj) {
         if (message.hasOwnProperty(i)) {
@@ -122,7 +124,7 @@ function find(queryObj, callback) {
 		} else {
       getAllCommentsByStatus(token, statusID, function (comments) {
         for (var i = 0; i < comments.length; i++) {
-          console.log(toAscii(comments[i].message));
+          //console.log(toAscii(comments[i].message));
           try {
               //comments[i].message = comments[i].message.slice(comments[i].message.indexOf('\n'));
               comments[i].message = JSON.parse(toAscii(comments[i].message));
@@ -156,7 +158,7 @@ function insert(queryObj, callback) {
 	var token = queryObj["token"];
 	var args = queryObj["args"];
 	retrieveStatusId(apiKey, collection, function(statusID) {
-    console.log(statusID);
+    //console.log(statusID);
     var status = "[MongoFB Data]\ncollection name: " + collection;
     //var comment = "-" + args.substring(0,5) + '-\n' + to64(args);
     var comment = to64(args);
@@ -190,7 +192,7 @@ function save(queryObj, callback) {
 }
 
 function remove(queryObj, callback) {
-	console.log("insert");
+	console.log("remove");
   var collection = queryObj["collection"];
   var apiKey = queryObj["apiKey"];
   var token = queryObj["token"];
@@ -198,6 +200,10 @@ function remove(queryObj, callback) {
   find(queryObj, function(comments) {
     //remove all
     console.log(comments);
+    if (comments.length == 0) {
+      console.log("nothing to remove");
+      return;
+    }
     for (var i = 0; i < comments.length; i++) {
       //function deleteObject(token, objectID, callback) 
       deleteObject(token, comments[i].id, function() {
@@ -248,7 +254,7 @@ function command_helper(queryObj, callback) {
 exports.queryHelper = function(req, res, next) {
     var args = unescape(req.queryObj.args);
     req.queryObj.args = args.replace(/\{\ *\}|\ */,'');
-    console.log("ARGS" + args);
+    //console.log("ARGS" + args);
     if (req.queryObj.args != '') {
         try {
             JSON.parse(args);
