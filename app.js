@@ -6,7 +6,7 @@ var app = express();
 
 var Mongoose = require('mongoose');
 var mongoUri = process.env.MONGOHQ_URL ||
-  'mongodb://localhost/mydb';
+  'mongodb://localhost/mongofb';
 var db = Mongoose.createConnection(mongoUri);
 
 var allowCrossDomain = function(req, res, next) {
