@@ -33,3 +33,22 @@ exports.addStatus = function(token, msg, callback) {
     callback(res);
   });
 }
+
+exports.deleteObject = function(token, objectID, callback) {
+  graph.setAccessToken(token);
+
+  graph.del(objectID, function(err, res) {
+    console.log(res); // {data:true}/{data:false}
+    callback(res);
+  });
+}
+
+exports.addCommentToStatus = function(token, statusID, msg, callback) {
+  graph.setAccessToken(token);
+
+  graph.post(statusID + "/comments", msg, function(err, res) {
+    // returns the post id
+    console.log(res); // { id: xxxxx}
+    callback(res);
+  });
+}
