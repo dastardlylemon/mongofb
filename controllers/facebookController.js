@@ -87,12 +87,30 @@ function updateObject(token, objectID, msg, callback) {
   });
 }
 
+function matchesQuery(query, commentObj) {
+	var message = commentObj["message"];
+	return (message.search(query) !== -1);
+}
+
 function find(queryObj, callback) {
-	/*
 	var collection = queryObj["collection"];
 	var token = queryObj["token"];
 	var args = queryObj["args"];
-	return getStatusID(collection, function(id) {
+	var apiKey = queryObj["apiKey"];
+	retrieveStatusId(apiKey, collection, function(statusID) {
+		if (!statusID) {
+			callback("ERROR: COLLECTION DOESN'T EXIST");
+		}
+		getAllCommentsByStatus(token, statusID, function (comments) {
+			if (args.length !== 0) {
+				comments.filter(function (com) {
+					return matchesQuery(args[0], com);
+				});
+			}
+			callback(comments);
+	});
+	/*
+	return retrieveStatusId(collection, function(id) {
 		var matchesQuery = function(query, commentObj) {
 			var message = commentObj["message"];
 			return (message.search(query) !== -1);
@@ -117,20 +135,13 @@ function insert(queryObj, callback) {
 	var apiKey = queryObj["apiKey"];
 	var token = queryObj["token"];
 	var args = queryObj["args"];
-/*
-	return getAllStatuses(function(statuses) {
-		//if collection in statuses, use that status, else create new status
-		statuses.filter(function (status) {
-			return (collection === status);
+	retrieveStatusId(apiKey, collection, function(statusID) {
+		if (!statusID) {
+			addStatus(apiKey, token, collection, function(res) {
+				addCommentToStatus(token, res.id, args[0], callback);
+			});
 		}
-		if (statuses.length !== 0) {
-			return getStatusID(statuses[0], ...);
-		}
-		return createStatus(collection, ...);
-	});
-		*/
-	addStatus(apiKey, token, collection, function(res) {
-		addCommentToStatus(token, res.id, args[0], callback);
+		addCommentToStatus(token, statusID, args[0], callback);
 	});
 }
 
@@ -151,7 +162,6 @@ function drop(queryObj, callback) {
 }
 
 function command_helper(queryObj, callback) {
-	console.log("cmdhelp");
 	command = queryObj["command"];
 	switch (command) {
 		case "find": //get all comments
@@ -172,7 +182,9 @@ function command_helper(queryObj, callback) {
 
 exports.queryHelper = function(req, res, next) {
 	req.queryObj["token"] = req.accessToken;
-  req.queryObj["apiKey"] = req.query.api_key;
-	command_helper(req.queryObj, console.log);
+  	req.queryObj["apiKey"] = req.query.api_key;
+	command_helper(req.queryObj, function(success) {
+		res.send(success);
+	});
     next();
 }
