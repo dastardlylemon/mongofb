@@ -1,7 +1,3 @@
-function find(query, callback) {
-	return callback("find");
-}
-
 function getAllStatuses(callback) {
 	return callback("getAllStatuses");
 }
@@ -37,28 +33,48 @@ function parse(query, callback) {
 	return callback(result);
 }
 
+function find(query, callback) {
+	return callback("find");
+}
+
+function insert(query, callback) {
+	return callback("insert");
+}
+
+function update(query, callback) {
+	return callback("insert");
+}
+
+function save(query, callback) {
+	return callback("insert");
+}
+
+function remove(query, callback) {
+	return callback("insert");
+}
+
+function drop(query, callback) {
+	return callback("insert");
+}
+
 function call_command_with_args(commandArgs, callback) {
 	command = commandArgs["command"];
 	args = commandArgs["args"];
 	switch (command) {
 		case "find": //get all comments
 			return find(args, callback);
-			break;
 		case "insert":
-			break;
+			return insert(args, callback);
 		case "update":
-			break;
+			return update(args, callback);
 		case "save":
-			break;
+			return save(args, callback);
 		case "remove":
-			break;
+			return remove(args, callback);
 		case "drop":
-			break;
-		default:
-			return "Incorrectly formatted request";
+			return drop(args, callback);
 	}
-	callback(command);
-	return callback(args);
+	return send_error(callback);
 }
 
 parse("db.1234.find()", console.log);
