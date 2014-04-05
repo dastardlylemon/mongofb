@@ -13,7 +13,7 @@ function getAllCommentsByStatus(token, statusID, callback) {
   graph.setAccessToken(token);
 
   var retrieveAllCommentsByStatus = function(token, status, callback) {
-    graph.get("/" + status, function(err, data) {
+    graph.get(status, function(err, data) {
         console.log(data);
         for (var i = 0; i < data.comments.data; i++) {
           comments.push(data.comments.data[i]);
