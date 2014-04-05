@@ -5,7 +5,8 @@
   "dependencies": {
     "express": "~3.2.6",
     "jade": "~0.31.2",
-    "mongoose": "~3.8.x"
+    "mongoose": "~3.8.x",
+    "fbgraph": "~0.2.10"
   },
   "engines": {
       "node": "0.10.x"
