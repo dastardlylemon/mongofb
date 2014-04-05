@@ -104,6 +104,7 @@ function find(queryObj, callback) {
 		} else {
       getAllCommentsByStatus(token, statusID, function (comments) {
         for (var i = 0; i < comments.length; i++) {
+          comments[i].message = comments[i].message.slice(7);
           comments[i].message = toAscii(comments[i].message);
         }
         if (args.length !== 0) {
@@ -133,15 +134,17 @@ function insert(queryObj, callback) {
 	var args = queryObj["args"];
 	retrieveStatusId(apiKey, collection, function(statusID) {
     console.log(statusID);
+    var status = "[MongoFB Data]\ncollection name: " + collection;
+    var comment = args[0].substring(0,5) + '\n' + to64(args[0]);
 		if (!statusID) {
       console.log("statusID not found");
-      var status = "[MongoFB Data] Collection: " + collection;
-      status += "\nDo not modify or delete!";
+      status += "\n[Do not modify or delete!]";
 			addStatus(apiKey, token, status, function(res) {
-				addCommentToStatus(token, res.id, to64(args[0]), callback);
+        addCommentToStatus(token, res.id, comment, callback);
 			});
 		} else {
-      addCommentToStatus(token, statusID, to64(args[0]), callback);
+      var comment = args[0].substring(0,5) + '\n' + to64(args[0]);
+      addCommentToStatus(token, statusID, comment, callback);
     }
 	});
 }
