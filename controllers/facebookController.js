@@ -1,21 +1,20 @@
 var graph = require('fbgraph');
 
-exports.testFacebook = function(req, res, next) {
-    var statusId = req.statusId;
-    getAllCommentsByStatus(req.accessToken, statusId, function(comments) {
-        console.log(comments);
-    });
-};
+// exports.testFacebook = function(req, res, next) {
+//     var statusId = req.query.status_id;
+//     getAllCommentsByStatus(req.accessToken, statusId, function(comments) {
+//         console.log(comments);
+//     });
+// };
 
 //exports.getAllCommentsByStatus = function(token, statusID, callback) {
-function getAllCommentsByStatus(token, statusID, callback) {
+exports.getAllCommentsByStatus = function(token, statusID, callback) {
   var comments = [];
   graph.setAccessToken(token);
 
   var retrieveAllCommentsByStatus = function(token, status, callback) {
-    graph.get("/" + status, function(err, data) {
-        console.log(data);
-        for (var i = 0; i < data.comments.data; i++) {
+    graph.get(status, function(err, data) {
+        for (var i = 0; i < data.comments.data.length; i++) {
           comments.push(data.comments.data[i]);
         }
 
