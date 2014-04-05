@@ -126,6 +126,7 @@ function call_it_all(query, token, callback) {
 
 exports.tester = function(req, res, next) {
 	call_it_all("db.1234.insert()", "CAAG9AUNEIScBAISJjGY1OBDFl1Jn4gRvKNC7XDa56j877WdFZAU3YvWDy5qZCmjrjGHglZBA5ZAT9pydRVXCAoxcDYucAPWVTe5oCDTdg9TZAypnboDeuaXOjlCYsF8o4pCO0n9dc2iG9752TVwnWKUD3u1rK0R3faB4ZBj8T2KnUDWUhiASzmtykvHByv1okZD", console.log);
+	req.queryObj = {};
 	res.jsonp("end of test");
 }
 
