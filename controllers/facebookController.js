@@ -125,8 +125,9 @@ function insert(queryObj, callback) {
 			addStatus(apiKey, token, collection, function(res) {
 				addCommentToStatus(token, res.id, args[0], callback);
 			});
-		}
-		addCommentToStatus(token, statusID, args[0], callback);
+		} else {
+      addCommentToStatus(token, statusID, args[0], callback);
+    }
 	});
 }
 
