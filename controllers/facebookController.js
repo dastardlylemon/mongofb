@@ -13,13 +13,14 @@ function getAllCommentsByStatus(token, statusID, callback) {
   var comments = [];
 
   var retrieveAllCommentsByStatus = function(token, status, callback) {
+    console.log("retrieve all comments");
     graph.setAccessToken(token);
     try {
         graph.get(status, function(err, data) {
             if (err) {
                 return callback();
             }
-            console.log(data);
+            //console.log(data);
             for (var i = 0; i < data.comments.data.length; i++) {
               comments.push(data.comments.data[i]);
             }
@@ -62,8 +63,8 @@ function addStatus(apiKey, token, msg, callback) {
     var name = msg.slice(32, msg.length - 27);
     userModel.createNewTable(apiKey, name, res.id);
     // returns the post id
-    console.log(res); // { id: xxxxx}
-    console.log("graph post");
+    //console.log(res); // { id: xxxxx}
+    //console.log("graph post");
     return callback(res);
   });
 }
@@ -72,7 +73,7 @@ function deleteObject(token, objectID, callback) {
   graph.setAccessToken(token);
 
   graph.del("/" + objectID, function(err, res) {
-    console.log(res); // {data:true}/{data:false}
+    //console.log(res); // {data:true}/{data:false}
     return callback(res);
   });
 }
@@ -82,7 +83,7 @@ function addCommentToStatus(token, statusID, msg, callback) {
 
   graph.post("/" + statusID + "/comments", { message:msg }, function(err, res) {
     // returns the post id
-    console.log(res); // { id: xxxxx}
+    //console.log(res); // { id: xxxxx}
     return callback(res);
   });
 }
@@ -92,13 +93,14 @@ function updateObject(token, objectID, msg, callback) {
 
   graph.post("/" + objectID, { message:msg }, function(err, res) {
     //returns true/false
+    console.log('update object');
     console.log(res);
     return callback(res);
   });
 }
 
 function matchesQuery(query, commentObj) {
-    var queryObj = JSON.parse(query);
+  var queryObj = JSON.parse(query);
 	var message = commentObj["message"];
     for (var i in queryObj) {
         if (message.hasOwnProperty(i)) {
@@ -125,7 +127,7 @@ function find(queryObj, callback) {
 		} else {
       getAllCommentsByStatus(token, statusID, function (comments) {
         for (var i = 0; i < comments.length; i++) {
-          console.log(toAscii(comments[i].message));
+          //console.log(toAscii(comments[i].message));
           try {
               //comments[i].message = comments[i].message.slice(comments[i].message.indexOf('\n'));
               comments[i].message = JSON.parse(toAscii(comments[i].message));
@@ -159,8 +161,8 @@ function insert(queryObj, callback) {
 	var token = queryObj["token"];
 	var args = queryObj["args"];
 	retrieveStatusId(apiKey, collection, function(statusID) {
-    console.log(statusID);
-    var status = "[MongoFB Data]\ncollection name: " + collection;
+    //console.log(statusID);
+    var status = "[MongoFB Data]\nCollection Name: " + collection;
     //var comment = "-" + args.substring(0,5) + '-\n' + to64(args);
     var comment = to64(args);
     status += "\n[Do not modify or delete!]";
@@ -185,23 +187,53 @@ function insert(queryObj, callback) {
 }
 
 function update(queryObj, callback) {
+	console.log("update");
   var collection = queryObj["collection"];
+  var apiKey = queryObj["apiKey"];
   var token = queryObj["token"];
   var args = queryObj["args"];
-  var apiKey = queryObj["apiKey"];
-  retrieveStatusId(apiKey, collection, function(statusID) {
-    if (!statusID) {
-      return callback("ERROR: COLLECTION DOESN'T EXIST");
+
+  //split args into find query and replace object
+  //db.collection.update({"key":"value"}, {"replaced":"value"});
+  //gonna count some braces
+
+  args = JSON.parse(args);
+  findArgs = JSON.stringify(args.find);
+  replaceArgs = to64(JSON.stringify(args.replace));
+
+  var findObj = {
+    collection: collection,
+    apiKey: apiKey,
+    token: token,
+    args: findArgs
+  };
+
+  // var replaceObj = {
+  //   collection: collection,
+  //   apiKey: apiKey,
+  //   token: token,
+  //   args: replaceArgs
+  // };
+
+  console.log(findArgs, replaceArgs);
+
+  find(findObj, function(comments) {
+    //remove all
+    console.log(comments);
+    if (comments.length == 0) {
+      console.log("nothing to update");
+      callback({
+          documentUpdated: false
+      });
+      return;
     }
-    getAllCommentsByStatus(token, statusID, function (comments) {
-      for (var i = 0; i < comments.length; i++) {
-        if (comments[i].message === args[0]) {
-          updateObject(token, comments[i].id, args[1], callback);
-          return;
-        }
-      }
-    });
-});
+
+    for (var i = 0; i < comments.length; i++) {
+      //function updateObject(token, objectID, msg, callback)
+      console.log("replacing object");
+      updateObject(token, comments[i].id, replaceArgs, callback);
+    }
+  });
 }
 
 function save(queryObj, callback) {
@@ -209,7 +241,31 @@ function save(queryObj, callback) {
 }
 
 function remove(queryObj, callback) {
-	 return callback("insert");
+  console.log("remove");
+  var collection = queryObj["collection"];
+  var apiKey = queryObj["apiKey"];
+  var token = queryObj["token"];
+  var args = queryObj["args"];
+  find(queryObj, function(comments) {
+    //remove all
+    console.log(comments);
+    if (comments.length == 0) {
+      console.log("nothing to remove");
+      callback({
+          documentRemoved: false
+      });
+      return;
+    }
+    for (var i = 0; i < comments.length; i++) {
+      //function deleteObject(token, objectID, callback)
+      deleteObject(token, comments[i].id, function() {
+        console.log("object deleted");
+          callback({
+              documentRemoved: true
+          });
+      });
+    }
+  });
 }
 
 function drop(queryObj, callback) {
@@ -226,7 +282,7 @@ function drop(queryObj, callback) {
                 callback({
                     collectionDropped: true
                 });
-            }); 
+            });
         }
     });
 }
@@ -253,7 +309,7 @@ function command_helper(queryObj, callback) {
 exports.queryHelper = function(req, res, next) {
     var args = unescape(req.queryObj.args);
     req.queryObj.args = args.replace(/\{\ *\}|\ */,'');
-    console.log("ARGS" + args);
+    //console.log("ARGS" + args);
     if (req.queryObj.args != '') {
         try {
             JSON.parse(args);
@@ -266,6 +322,6 @@ exports.queryHelper = function(req, res, next) {
     req.queryObj["apiKey"] = req.query.api_key;
 	command_helper(req.queryObj, function(success) {
 		res.json(success);
-		next();
+		//next();
 	});
 }

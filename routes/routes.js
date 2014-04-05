@@ -12,6 +12,8 @@ module.exports = function(app) {
 
     app.get('/testquery', queryController.tester, userController.retrieveAccessToken, facebookController.queryHelper);
 
+    app.get('/api/v1', queryController.tester, userController.retrieveAccessToken, facebookController.queryHelper);
+
     //app.get('/testfacebook', userController.retrieveAccessToken, facebookController.testFacebook);
 
 }
