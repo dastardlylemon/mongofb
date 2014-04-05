@@ -37,6 +37,7 @@ function getAllCommentsByStatus(token, statusID, callback) {
   }
 
   return retrieveAllCommentsByStatus(token, statusID, function() {
+    console.log(comments);
     return callback(comments);
   });
 }
@@ -237,9 +238,9 @@ function update(queryObj, callback) {
       });
       return;
     }
-    
+
     for (var i = 0; i < comments.length; i++) {
-      //function updateObject(token, objectID, msg, callback) 
+      //function updateObject(token, objectID, msg, callback)
       console.log("replacing object");
       updateObject(token, comments[i].id, replaceArgs, callback);
     }
@@ -251,7 +252,7 @@ function save(queryObj, callback) {
 }
 
 function remove(queryObj, callback) {
-	console.log("remove");
+  console.log("remove");
   var collection = queryObj["collection"];
   var apiKey = queryObj["apiKey"];
   var token = queryObj["token"];
@@ -267,7 +268,7 @@ function remove(queryObj, callback) {
       return;
     }
     for (var i = 0; i < comments.length; i++) {
-      //function deleteObject(token, objectID, callback) 
+      //function deleteObject(token, objectID, callback)
       deleteObject(token, comments[i].id, function() {
         console.log("object deleted");
           callback({
@@ -292,7 +293,7 @@ function drop(queryObj, callback) {
                 callback({
                     collectionDropped: true
                 });
-            }); 
+            });
         }
     });
 }

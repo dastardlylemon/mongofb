@@ -17,8 +17,27 @@
       </div>
     </div>
     <div id="api-key" style="display: none">
+      <h4>Grab the client <a href="https://github.com/thecalvinchan/mongofb_client">here</a>, add your API key to <code>config.json</code>, and run it via <code>node mongofb.js</code><br><br>
       <h3>Your MongoFB API Key</h3>
       <div id="key-field"></div>
+      <br>
+      <h2>Now what?</h2><br>
+      <h4>MongoFB works with familiar SQL queries—no need to learn a new syntax. Simply insert any valid JSON object of your choice.</h4><br>
+      <div class="sample">
+        <span>db.</span>COLLECTION_NAME<span>.insert(</span>{"KEY": "VALUE"}<span>)</span>
+      </div>
+      <div class="sample">
+        <span>db.</span>COLLECTION_NAME<span>.find(</span>{"KEY": "VALUE"}<span>)</span>
+      </div>
+      <div class="sample">
+        <span>db.</span>COLLECTION_NAME<span>.update("find:"</span>{"KEY": "VALUE"}<span>,"replace:"</span>{"KEY": "VALUE"}<span>)</span>
+      </div>
+      <div class="sample">
+        <span>db.</span>COLLECTION_NAME<span>.remove(</span>{"KEY": "VALUE"}<span>)</span>
+      </div>
+      <div class="sample">
+        <span>db.</span>COLLECTION_NAME<span>.remove(</span>{"KEY": "VALUE"}<span>)</span>
+      </div>
     </div>
   </div>
   <div id="content-desc">
@@ -27,7 +46,7 @@
     </p>
     <h2>Features</h2>
     <div class="feature">
-      <h3>Status-Oriented Storage</h3>
+      <h3>Document-Oriented Storage</h3>
       <span>Your data is stored safely in the most simple yet powerful schema of all time: Facebook statuses.</span>
     </div>
     <div class="feature">
