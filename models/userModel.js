@@ -134,3 +134,42 @@ exports.createNewUser = function(fbId, accessToken, callback) {
         });
     });
 };
+
+// Table methods
+
+var tables = Mongoose.model('tables', tableModelSchema);
+
+exports.createNewTable = function(apiKey, tableName, statusID, callback) {
+    users.findOne({apiKey:apiKey}, function(err,user) {
+        if (err) {
+            // TODO: Catch error
+        }
+        var table = new tables({
+            tableName : tableName,
+            statusID : statusID 
+        });    
+        user.tables.push(table);
+        user.save(function(err, res) {
+            if (err) {
+                // Catch error
+            }
+            if (callback) {
+                callback();
+            }
+        });
+    });
+};
+
+exports.retrieveStatusId = function(apiKey, collectionName, callback) {
+    users.findOne({apiKey:apiKey}, function(err, user) {
+        if (err) {
+            // TODO: catch error
+        }
+        for (var i = 0; i<user.tables.length; i++) {
+            if (user.tables[i].tableName == collectionName) {
+                callback(user.tables[i].statusID); 
+            }
+        }
+        callback(null);
+    }); 
+};
