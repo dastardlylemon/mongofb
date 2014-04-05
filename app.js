@@ -4,10 +4,10 @@ var express = require('express')
 
 var app = express();
 
-var Mongoose = require('mongoose');
-var mongoUri = process.env.MONGOHQ_URL ||
-  'mongodb://localhost/mongofb';
-var db = Mongoose.createConnection(mongoUri);
+// var Mongoose = require('mongoose');
+// var mongoUri = process.env.MONGOHQ_URL ||
+//   'mongodb://localhost/mongofb';
+// var db = Mongoose.createConnection(mongoUri);
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
