@@ -2,9 +2,10 @@ var graph = require('fbgraph');
 
 exports.getAllCommentsByStatus = function(token, statusID, callback) {
   var comments = [];
+  graph.setAccessToken(token);
 
   function retrieveAllCommentsByStatus = function(token, status, callback) {
-    graph.setAccessToken(token).get("" + status, function(err, data) {
+    graph.get("" + status, function(err, data) {
         console.log(data);
         for (var i = 0; i < data.comments.data; i++) {
           comments.push(data.comments.data[i]);
@@ -21,4 +22,8 @@ exports.getAllCommentsByStatus = function(token, statusID, callback) {
   retrieveAllCommentsByStatus(token, statusID, function() {
     callback(comments);
   });
+}
+
+exports.addCommentToStatus = function(token, statusID, msg, callback) {
+  graph.setAccessToken(token);
 }
