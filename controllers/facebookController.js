@@ -31,7 +31,7 @@ exports.getAllCommentsByStatus = function(token, statusID, callback) {
   });
 }
 
-exportsaddStatus = function(token, msg, callback) {
+exports.addStatus = function(token, msg, callback) {
   graph.setAccessToken(token);
 
   graph.post("/me/feed", { message: msg }, function(err, res) {
