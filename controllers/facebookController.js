@@ -102,6 +102,9 @@ function find(queryObj, callback) {
 			callback("ERROR: COLLECTION DOESN'T EXIST");
 		} else {
       getAllCommentsByStatus(token, statusID, function (comments) {
+        for (var i = 0; i < comments.length; i++) {
+          comments[i].message = toAscii(comments[i].message);
+        }
         if (args.length !== 0) {
           comments.filter(function (com) {
             return matchesQuery(args[0], com);
