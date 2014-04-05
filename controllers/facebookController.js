@@ -108,25 +108,8 @@ function find(queryObj, callback) {
 				});
 			}
 			callback(comments);
-	});
-	/*
-	return retrieveStatusId(collection, function(id) {
-		var matchesQuery = function(query, commentObj) {
-			var message = commentObj["message"];
-			return (message.search(query) !== -1);
-		}
-
-		return getAllCommentsByStatus(token, id, function (comments) {
-			if (args.length !== 0) {
-				comments.filter(function (com) {
-					return matchesQuery(args[0], com);
-				});
-			}
-			return callback(comments);
 		});
 	});
-	*/
-	return callback("find");
 }
 
 function insert(queryObj, callback) {
