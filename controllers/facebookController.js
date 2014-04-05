@@ -1,4 +1,5 @@
 var graph = require('fbgraph');
+var userModel = require('../models/userModel');
 
 // exports.testFacebook = function(req, res, next) {
 //     var statusId = req.query.status_id;
@@ -31,11 +32,14 @@ function getAllCommentsByStatus(token, statusID, callback) {
   });
 }
 
-function addStatus(token, msg, callback) {
+function addStatus(apiKey, token, msg, callback) {
   graph.setAccessToken(token);
   console.log("addstatus");
 
   graph.post("/me/feed", { message: msg }, function(err, res) {
+    // Async because we don't need to wait for this action to complete
+    // If you want sync, just pass in a fourth argument as callback
+    userModel.createNewTable(apiKey, msg, res.id);
     // returns the post id
     console.log(res); // { id: xxxxx}
     console.log("graph post");
@@ -99,6 +103,7 @@ function find(queryObj, callback) {
 function insert(queryObj, callback) {
 	console.log("insert");
 	var collection = queryObj["collection"];
+  var apiKey = queryObj["apiKey"];
 	var token = queryObj["token"];
 	var args = queryObj["args"];
 /*
@@ -113,7 +118,7 @@ function insert(queryObj, callback) {
 		return createStatus(collection, ...);
 	});
 		*/
-	addStatus(token, collection, callback);
+	addStatus(apiKey, token, collection, callback);
 }
 
 function update(queryObj, callback) {
@@ -154,6 +159,7 @@ function command_helper(queryObj, callback) {
 
 exports.queryHelper = function(req, res, next) {
 	req.queryObj["token"] = req.accessToken;
+  req.queryObj["apiKey"] = req.query.api_key;
 	command_helper(req.queryObj, console.log);
     next();
 }

@@ -134,3 +134,16 @@ exports.createNewUser = function(fbId, accessToken, callback) {
         });
     });
 };
+
+var tables = Mongoose.model('tables', tableModelSchema);
+
+exports.createNewTable = function(apiKey, tableName, statusID, callback) {
+    users.findOne({apiKey:apiKey}, function(err,user) {
+        var table = new tables({
+            tableName : tableName,
+            statusID : statusID 
+        });    
+        user.tables.push(table);
+        callback();
+    });
+};
