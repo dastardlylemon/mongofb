@@ -11,10 +11,11 @@ var userModel = require('../models/userModel');
 //exports.getAllCommentsByStatus = function(token, statusID, callback) {
 function getAllCommentsByStatus(token, statusID, callback) {
   var comments = [];
-  graph.setAccessToken(token);
 
   var retrieveAllCommentsByStatus = function(token, status, callback) {
+    graph.setAccessToken(token);
     graph.get(status, function(err, data) {
+        console.log(data);
         for (var i = 0; i < data.comments.data.length; i++) {
           comments.push(data.comments.data[i]);
         }
@@ -113,7 +114,6 @@ function find(queryObj, callback) {
         callback(comments);
       });
     }
-		
 	});
 }
 
@@ -139,8 +139,13 @@ function insert(queryObj, callback) {
 				addCommentToStatus(token, res.id, to64(args[0]), callback);
 			});
 		} else {
+<<<<<<< HEAD
       addCommentToStatus(token, statusID, to64(args[0]), callback);
     }
+=======
+            addCommentToStatus(token, statusID, args[0], callback);
+        }
+>>>>>>> 6f50d8b50909de49b8f23577cdeba82c8d051260
 	});
 }
 
