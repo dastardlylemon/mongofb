@@ -55,12 +55,14 @@ var users = Mongoose.model('users', userModelSchema);
 // Searches through user collection and finds user with
 // given apiKey. Calls the callback function with
 // access token as argument.
-exports.getAccessToken = function(apiKey, callback) {
-    users.findOne({apiKey:apiKey}, function(err, user) {
+exports.getAccessToken = function(api, callback) {
+    users.findOne({apiKey:api}, function(err, user) {
         if (err) {
             console.log(err);
             return;
         } else {
+            console.log(user);
+            console.log(err);
             // Checks to see if stored access token is still valid
             if (Date.now()/1000 > user.expiresAt) {
                 // Requests new access token
@@ -79,6 +81,7 @@ exports.getAccessToken = function(apiKey, callback) {
                     user.save(function(err, user){
                         if (err) {
                             console.log(err);
+                            callback(undefined)
                             return;
                         } else {
                             callback(user.accessToken);
@@ -107,15 +110,15 @@ exports.createNewUser = function(fbId, accessToken, callback) {
             accessToken : longAccessToken,
             expiresAt : expiresAt
         });
-        user.save(function(err, user) {
+        user.save(function(err, res) {
             if (err) {
                 if (err.code == 11000) {
-                    callback(null);
+                    callback(null)
                 } else {
                     callback(undefined);
                 }
             } else {
-                callback(user);
+                callback(res);
             }
         });
     });
