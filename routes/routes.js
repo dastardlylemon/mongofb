@@ -1,11 +1,9 @@
-var queryController = require('../controllers/queryController');
-var userController = require('../controllers/userController');
-var facebookController = require('../controllers/facebookController');
+module.exports = function(app) {
 
-exports.query = function(req,res) {
-    var query = req.params.query;
-    var apiKey = req.params.key;
-    userController.getAccessToken(apiKey, function(accessToken) {
-        facebookController.doSomething(accessToken, function(){});
-    });
+    var queryController = require('../controllers/queryController');
+    var userController = require('../controllers/userController');
+    var facebookController = require('../controllers/facebookController');
+
+    app.get('/query', queryController.parse, userController.retrieveAccessToken, facebookController.doSomething);
+    
 }

@@ -1,5 +1,9 @@
 var userModel = require('../models/userModel.js');
 
-exports.getAccessToken = function(apiKey, callback) {
-    userModel.getAccessToken(apiKey, callback);
+exports.retrieveAccessToken = function(req, res, next) {
+    var apiKey = req.apiKey;
+    userModel.getAccessToken(apiKey, function(accessToken) {
+        req.accessToken = accessToken;
+        next();
+    });
 }
