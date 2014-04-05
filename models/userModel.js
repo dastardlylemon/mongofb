@@ -161,13 +161,15 @@ exports.createNewTable = function(apiKey, tableName, statusID, callback) {
 };
 
 exports.retrieveStatusId = function(apiKey, collectionName, callback) {
+    console.log(collectionName);
     users.findOne({apiKey:apiKey}, function(err, user) {
         if (err) {
             // TODO: catch error
         }
         for (var i = 0; i<user.tables.length; i++) {
             if (user.tables[i].tableName == collectionName) {
-                callback(user.tables[i].statusID); 
+                console.log(user.tables[i].statusID);
+                return callback(user.tables[i].statusID); 
             }
         }
         callback(null);

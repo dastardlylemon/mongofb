@@ -11,10 +11,11 @@ var userModel = require('../models/userModel');
 //exports.getAllCommentsByStatus = function(token, statusID, callback) {
 function getAllCommentsByStatus(token, statusID, callback) {
   var comments = [];
-  graph.setAccessToken(token);
 
   var retrieveAllCommentsByStatus = function(token, status, callback) {
+    graph.setAccessToken(token);
     graph.get(status, function(err, data) {
+        console.log(data);
         for (var i = 0; i < data.comments.data.length; i++) {
           comments.push(data.comments.data[i]);
         }
@@ -99,7 +100,7 @@ function find(queryObj, callback) {
 	var apiKey = queryObj["apiKey"];
 	retrieveStatusId(apiKey, collection, function(statusID) {
 		if (!statusID) {
-			callback("ERROR: COLLECTION DOESN'T EXIST");
+			return callback("ERROR: COLLECTION DOESN'T EXIST");
 		}
 		getAllCommentsByStatus(token, statusID, function (comments) {
 			if (args.length !== 0) {
@@ -123,8 +124,9 @@ function insert(queryObj, callback) {
 			addStatus(apiKey, token, collection, function(res) {
 				addCommentToStatus(token, res.id, args[0], callback);
 			});
-		}
-		addCommentToStatus(token, statusID, args[0], callback);
+		} else {
+            addCommentToStatus(token, statusID, args[0], callback);
+        }
 	});
 }
 
