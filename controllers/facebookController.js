@@ -24,7 +24,7 @@ exports.getAllCommentsByStatus = function(token, statusID, callback) {
   });
 }
 
-exports.addCommentToStatus = function(token, statusID, msg, callback) {
+exports.addStatus = function(token, msg, callback) {
   graph.setAccessToken(token);
 
   graph.post("me/feed", msg, function(err, res) {
