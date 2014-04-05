@@ -161,7 +161,7 @@ function insert(queryObj, callback) {
 	var args = queryObj["args"];
 	retrieveStatusId(apiKey, collection, function(statusID) {
     //console.log(statusID);
-    var status = "[MongoFB Data]\ncollection name: " + collection;
+    var status = "[MongoFB Data]\nCollection Name: " + collection;
     //var comment = "-" + args.substring(0,5) + '-\n' + to64(args);
     var comment = to64(args);
     status += "\n[Do not modify or delete!]";
