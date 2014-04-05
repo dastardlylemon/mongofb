@@ -115,12 +115,21 @@ exports.createNewUser = function(fbId, accessToken, callback) {
         user.save(function(err, res) {
             if (err) {
                 if (err.code == 11000) {
-                    callback(null)
+                    users.findOne({fbId:fbId}, function(err,user) {
+                        callback({
+                            fbId : user.fbId,
+                            apiKey : user.apiKey,
+                            exists : true
+                        });
+                    });
                 } else {
                     callback(undefined);
                 }
             } else {
-                callback(res);
+                callback({
+                    fbId : res.fbId,
+                    apiKey : res.apiKey
+                });
             }
         });
     });
