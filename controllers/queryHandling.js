@@ -1,3 +1,5 @@
+var fbc = require('facebookController.js');
+
 function getAllStatuses(callback) {
 	return callback("getAllStatuses");
 }
