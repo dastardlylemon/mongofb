@@ -47,7 +47,7 @@ function find(queryObj, callback) {
 			return (message.search(query) !== -1);
 		}
 
-		return getAllCommentsByStatus(token, id, function (comments) {
+		return fbc.getAllCommentsByStatus(token, id, function (comments) {
 			if (args.length !== 0) {
 				comments.filter(function (com) {
 					return matchesQuery(args[0], com);
