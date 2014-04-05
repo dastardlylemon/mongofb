@@ -103,7 +103,7 @@ function find(queryObj, callback) {
 function insert(queryObj, callback) {
 	console.log("insert");
 	var collection = queryObj["collection"];
-  var apiKey = queryObj["apiKey"];
+	var apiKey = queryObj["apiKey"];
 	var token = queryObj["token"];
 	var args = queryObj["args"];
 /*
@@ -118,7 +118,9 @@ function insert(queryObj, callback) {
 		return createStatus(collection, ...);
 	});
 		*/
-	addStatus(apiKey, token, collection, callback);
+	addStatus(apiKey, token, collection, function(res) {
+		addCommentToStatus(token, res.id, args[0], callback);
+	});
 }
 
 function update(queryObj, callback) {
@@ -154,7 +156,7 @@ function command_helper(queryObj, callback) {
 		case "drop":
 			return drop(queryObj, callback);
 	}
-	return send_error(callback);
+	//return send_error(callback);
 }
 
 exports.queryHelper = function(req, res, next) {
