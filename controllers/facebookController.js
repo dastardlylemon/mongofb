@@ -13,7 +13,7 @@ function getAllCommentsByStatus(token, statusID, callback) {
   graph.setAccessToken(token);
 
   var retrieveAllCommentsByStatus = function(token, status, callback) {
-    graph.get("" + status, function(err, data) {
+    graph.get("/" + status, function(err, data) {
         console.log(data);
         for (var i = 0; i < data.comments.data; i++) {
           comments.push(data.comments.data[i]);
@@ -35,7 +35,7 @@ function getAllCommentsByStatus(token, statusID, callback) {
 exports.addStatus = function(token, msg, callback) {
   graph.setAccessToken(token);
 
-  graph.post("me/feed", { message: msg }, function(err, res) {
+  graph.post("/me/feed", { message: msg }, function(err, res) {
     // returns the post id
     console.log(res); // { id: xxxxx}
     callback(res);
@@ -45,7 +45,7 @@ exports.addStatus = function(token, msg, callback) {
 exports.deleteObject = function(token, objectID, callback) {
   graph.setAccessToken(token);
 
-  graph.del(objectID, function(err, res) {
+  graph.del("/" + objectID, function(err, res) {
     console.log(res); // {data:true}/{data:false}
     callback(res);
   });
@@ -54,7 +54,7 @@ exports.deleteObject = function(token, objectID, callback) {
 exports.addCommentToStatus = function(token, statusID, msg, callback) {
   graph.setAccessToken(token);
 
-  graph.post(statusID + "/comments", { message:msg }, function(err, res) {
+  graph.post("/" + statusID + "/comments", { message:msg }, function(err, res) {
     // returns the post id
     console.log(res); // { id: xxxxx}
     callback(res);
@@ -64,7 +64,7 @@ exports.addCommentToStatus = function(token, statusID, msg, callback) {
 exports.updateObject = function(token, objectID, msg, callback) {
   graph.setAccessToken(token);
 
-  graph.post(objectID, { message:msg }, function(err, res) {
+  graph.post("/" + objectID, { message:msg }, function(err, res) {
     //returns true/false
     console.log(res);
     callback(res);

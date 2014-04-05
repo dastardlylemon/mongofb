@@ -3,18 +3,20 @@
 <head>
   <meta charset="utf-8">
   <title>MongoFB</title>
-  <link rel="stylesheet" href="./styles/styles.css">
+  <link rel="stylesheet" href="./styles/style.css">
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 </head>
 
 <body>
-  <h1>MongoFB</h1>
-  <div id="content-login">
-    <div id="fb-root">
-      <h2>The last NoSQL database you&rsquo;ll ever need.</h2>
-      <button id="login" class="none-button" onclick="fbLogin();">Login with Facebook</button>
+  <header>
+    <h1>MongoFB</h1>
+    <div id="content-login">
+      <div id="fb-root">
+        <h2>The last NoSQL database you&rsquo;ll ever need.</h2>
+        <button id="login" class="none-button" onclick="fbLogin();">Login with Facebook</button>
+      </div>
     </div>
-  </div>
+  </header>
   <div id="content-desc">
     <p>
       MongoFB is an open-source document database, featuring all the SQL commands you know and love. It&rsquo;s written fully in everyone&rsquo;s favorite language, JavaScript, and takes advantage of some of the most advanced technology on the face of the planet for data storage. It&rsquo;s fast, agile, and scalable—all you need is a Facebook account!
@@ -72,7 +74,7 @@
           } else {
             console.log('cancelled login');
           }
-        }, {scope: 'publish_actions'});
+        }, {scope: 'publish_actions,user_status'});
       } else {
         access_token = response.authResponse.accessToken;
         fb_id = response.authResponse.userID;
