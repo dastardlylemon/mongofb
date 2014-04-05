@@ -8,7 +8,7 @@ exports.testFacebook = function(req, res, next) {
 };
 
 //exports.getAllCommentsByStatus = function(token, statusID, callback) {
-function getAllCommentsByStatus(token, statusID, callback) {
+exports.getAllCommentsByStatus = function(token, statusID, callback) {
   var comments = [];
   graph.setAccessToken(token);
 
@@ -31,7 +31,7 @@ function getAllCommentsByStatus(token, statusID, callback) {
   });
 }
 
-function addStatus(token, msg, callback) {
+exportsaddStatus = function(token, msg, callback) {
   graph.setAccessToken(token);
 
   graph.post("/me/feed", { message: msg }, function(err, res) {
@@ -41,7 +41,7 @@ function addStatus(token, msg, callback) {
   });
 }
 
-function deleteObject(token, objectID, callback) {
+exports.deleteObject = function(token, objectID, callback) {
   graph.setAccessToken(token);
 
   graph.del("/" + objectID, function(err, res) {
@@ -50,7 +50,7 @@ function deleteObject(token, objectID, callback) {
   });
 }
 
-function addCommentToStatus(token, statusID, msg, callback) {
+exports.addCommentToStatus = function(token, statusID, msg, callback) {
   graph.setAccessToken(token);
 
   graph.post("/" + statusID + "/comments", { message:msg }, function(err, res) {
@@ -60,7 +60,7 @@ function addCommentToStatus(token, statusID, msg, callback) {
   });
 }
 
-function updateObject(token, objectID, msg, callback) {
+exports.updateObject = function(token, objectID, msg, callback) {
   graph.setAccessToken(token);
 
   graph.post("/" + objectID, { message:msg }, function(err, res) {
