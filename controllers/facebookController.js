@@ -51,7 +51,8 @@ function addStatus(apiKey, token, msg, callback) {
   graph.post("/me/feed", { message: msg }, function(err, res) {
     // Async because we don't need to wait for this action to complete
     // If you want sync, just pass in a fourth argument as callback
-    userModel.createNewTable(apiKey, msg, res.id);
+    var name = msg.slice(32, msg.length - 27);
+    userModel.createNewTable(apiKey, name, res.id);
     // returns the post id
     console.log(res); // { id: xxxxx}
     console.log("graph post");
@@ -116,6 +117,7 @@ function find(queryObj, callback) {
         for (var i = 0; i < comments.length; i++) {
           console.log(toAscii(comments[i].message));
           try {
+              //comments[i].message = comments[i].message.slice(comments[i].message.indexOf('\n'));
               comments[i].message = JSON.parse(toAscii(comments[i].message));
           } catch(e) {
               comments[i].message = {};
@@ -148,13 +150,26 @@ function insert(queryObj, callback) {
 	var args = queryObj["args"];
 	retrieveStatusId(apiKey, collection, function(statusID) {
     console.log(statusID);
+    var status = "[MongoFB Data]\ncollection name: " + collection;
+    //var comment = "-" + args.substring(0,5) + '-\n' + to64(args);
+    var comment = to64(args);
+    status += "\n[Do not modify or delete!]";
 		if (!statusID) {
+      /**
       console.log("statusID not found")
 			addStatus(apiKey, token, collection, function(res) {
 				addCommentToStatus(token, res.id, to64(args), callback);
 			});
 		} else {
       addCommentToStatus(token, statusID, to64(args), callback);
+      **/
+        console.log("statusID not found");
+        addStatus(apiKey, token, status, function(res) {
+            addCommentToStatus(token, res.id, comment, callback);
+        });
+		} else {
+      //var comment = "-" + args.substring(0,5) + '-\n' + to64(args);
+      addCommentToStatus(token, statusID, comment, callback);
     }
 	});
 }
