@@ -19,15 +19,15 @@ exports.getAllCommentsByStatus = function(token, statusID, callback) {
         }
 
         if (data.comments.paging && data.comments.paging.next) {
-          retrieveAllCommentsByStatus(token, data.comments.paging.next, callback);
+          return retrieveAllCommentsByStatus(token, data.comments.paging.next, callback);
         } else {
-          callback();
+          return callback();
         }
     });
   }
 
-  retrieveAllCommentsByStatus(token, statusID, function() {
-    callback(comments);
+  return retrieveAllCommentsByStatus(token, statusID, function() {
+    return callback(comments);
   });
 }
 
@@ -37,7 +37,7 @@ exports.addStatus = function(token, msg, callback) {
   graph.post("/me/feed", { message: msg }, function(err, res) {
     // returns the post id
     console.log(res); // { id: xxxxx}
-    callback(res);
+    return callback(res);
   });
 }
 
@@ -46,7 +46,7 @@ exports.deleteObject = function(token, objectID, callback) {
 
   graph.del("/" + objectID, function(err, res) {
     console.log(res); // {data:true}/{data:false}
-    callback(res);
+    return callback(res);
   });
 }
 
@@ -56,7 +56,7 @@ exports.addCommentToStatus = function(token, statusID, msg, callback) {
   graph.post("/" + statusID + "/comments", { message:msg }, function(err, res) {
     // returns the post id
     console.log(res); // { id: xxxxx}
-    callback(res);
+    return callback(res);
   });
 }
 
@@ -66,6 +66,6 @@ exports.updateObject = function(token, objectID, msg, callback) {
   graph.post("/" + objectID, { message:msg }, function(err, res) {
     //returns true/false
     console.log(res);
-    callback(res);
+    return callback(res);
   });
 }
