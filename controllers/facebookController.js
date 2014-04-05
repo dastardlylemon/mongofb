@@ -168,6 +168,6 @@ exports.queryHelper = function(req, res, next) {
   	req.queryObj["apiKey"] = req.query.api_key;
 	command_helper(req.queryObj, function(success) {
 		res.json(success);
+		next();
 	});
-	next();
 }
