@@ -36,9 +36,23 @@ function parse(query, callback) {
 
 function find(queryObj, callback) {
 	/*
-	collection = queryObj["collection"];
+	var collection = queryObj["collection"];
+	var token = queryObj["token"];
+	var args = queryObj["args"];
 	return getStatusID(collection, function(id) {
-		getAllCommentsByStatus(
+	        function matchesQuery(query, commentObj) {
+			message = commentObj["message"];
+			return (message.search(query) !== -1);
+		}
+
+		return getAllCommentsByStatus(token, id, function (comments) {
+			if (args.length !== 0) {
+				comments.filter(function (com) {
+					return matchesQuery(args[0], com);
+				});
+			}
+			return callback(comments);
+		});
 	});
 	*/
 	return callback("find");
