@@ -28,9 +28,9 @@ app.use(express.limit('50mb'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
+//if ('development' == app.get('env')) {
+//  app.use(express.errorHandler());
+//}
 
 app.post('/query', routes.query);
 
