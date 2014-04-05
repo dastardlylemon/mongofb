@@ -51,6 +51,7 @@ function addStatus(apiKey, token, msg, callback) {
   graph.post("/me/feed", { message: msg }, function(err, res) {
     // Async because we don't need to wait for this action to complete
     // If you want sync, just pass in a fourth argument as callback
+    var name = msg.message.slice(7, );
     userModel.createNewTable(apiKey, msg, res.id);
     // returns the post id
     console.log(res); // { id: xxxxx}
@@ -104,7 +105,7 @@ function find(queryObj, callback) {
 		} else {
       getAllCommentsByStatus(token, statusID, function (comments) {
         for (var i = 0; i < comments.length; i++) {
-          comments[i].message = comments[i].message.slice(7);
+          comments[i].message = comments[i].message.slice(7, comments[i].message.length - 28);
           comments[i].message = toAscii(comments[i].message);
         }
         if (args.length !== 0) {
@@ -136,9 +137,9 @@ function insert(queryObj, callback) {
     console.log(statusID);
     var status = "[MongoFB Data]\ncollection name: " + collection;
     var comment = args[0].substring(0,5) + '\n' + to64(args[0]);
+    status += "\n[Do not modify or delete!]";
 		if (!statusID) {
       console.log("statusID not found");
-      status += "\n[Do not modify or delete!]";
 			addStatus(apiKey, token, status, function(res) {
         addCommentToStatus(token, res.id, comment, callback);
 			});
