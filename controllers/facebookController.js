@@ -14,18 +14,25 @@ function getAllCommentsByStatus(token, statusID, callback) {
 
   var retrieveAllCommentsByStatus = function(token, status, callback) {
     graph.setAccessToken(token);
-    graph.get(status, function(err, data) {
-        console.log(data);
-        for (var i = 0; i < data.comments.data.length; i++) {
-          comments.push(data.comments.data[i]);
-        }
+    try {
+        graph.get(status, function(err, data) {
+            if (err) {
+                return callback();
+            }
+            console.log(data);
+            for (var i = 0; i < data.comments.data.length; i++) {
+              comments.push(data.comments.data[i]);
+            }
 
-        if (data.comments.paging && data.comments.paging.next) {
-          return retrieveAllCommentsByStatus(token, data.comments.paging.next, callback);
-        } else {
-          return callback();
-        }
-    });
+            if (data.comments.paging && data.comments.paging.next) {
+              return retrieveAllCommentsByStatus(token, data.comments.paging.next, callback);
+            } else {
+              return callback();
+            }
+        });
+    } catch (e) {
+        return callback();
+    }
   }
 
   return retrieveAllCommentsByStatus(token, statusID, function() {
@@ -187,7 +194,22 @@ function remove(queryObj, callback) {
 }
 
 function drop(queryObj, callback) {
-	return callback("insert");
+    var apiKey = queryObj.apiKey;
+    var token = queryObj.token;
+    var collection = queryObj.collection;
+    userModel.removeCollection(apiKey,collection,function(err,statusID) {
+        if (err) {
+            callback({
+                collectionDropped: false
+            });
+        } else {
+            deleteObject(token, statusID, function() {
+                callback({
+                    collectionDropped: true
+                });
+            }); 
+        }
+    });
 }
 
 function command_helper(queryObj, callback) {
