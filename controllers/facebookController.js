@@ -139,7 +139,18 @@ function find(queryObj, callback) {
             return matchesQuery(args, com);
           });
         }
-        callback(comments);
+        //get rid of extra params
+        var retComments = [];
+        for (var i = 0; i < comments.length; i++) {
+          var temp = {
+            id: comments.id,
+            message: comments.message,
+            created_time: comments.create_time
+          };
+          retComments.push(temp);
+        }
+        callback(retComments);
+        //callback(comments);
       });
     }
 	});
@@ -193,7 +204,7 @@ function update(queryObj, callback) {
   var args = queryObj["args"];
 
   //split args into find query and replace object
-  //db.collection.update({"key":"value"}, {"replaced":"value"});
+  //db.collection.update("find":{"key":"value"}, "replace":{"replaced":"value"});
   //gonna count some braces
 
   args = JSON.parse(args);
