@@ -119,7 +119,7 @@ exports.createNewUser = function(fbId, accessToken, callback) {
             if (err) {
                 if (err.code == 11000) {
                     users.findOne({fbId:fbId}, function(err,user) {
-                        if (err || !user.fbId) {
+                        if (err || !user) {
                             callback(undefined);
                         } else {
                             callback({
