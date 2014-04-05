@@ -14,7 +14,7 @@ exports.createNewUser = function(req, res, next) {
                 error : "An error occured"
             });
         } else {
-            var userDetails = {}
+            var userDetails = {};
             userDetails.apiKey = user.apiKey;
             if (user.exists) {
                 userDetails.exists = true;
