@@ -150,7 +150,7 @@ function find(queryObj, callback) {
           };
           retComments.push(temp);
         }
-        callback(retComments);
+        callback(retComments); 
         //callback(comments);
       });
     }
