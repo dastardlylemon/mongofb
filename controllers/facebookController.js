@@ -134,8 +134,10 @@ function insert(queryObj, callback) {
 	retrieveStatusId(apiKey, collection, function(statusID) {
     console.log(statusID);
 		if (!statusID) {
-      console.log("statusID not found")
-			addStatus(apiKey, token, collection, function(res) {
+      console.log("statusID not found");
+      var status = "[MongoFB Data] Collection: " + collection;
+      status += "\nDo not modify or delete!";
+			addStatus(apiKey, token, status, function(res) {
 				addCommentToStatus(token, res.id, to64(args[0]), callback);
 			});
 		} else {
