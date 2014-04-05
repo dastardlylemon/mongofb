@@ -76,7 +76,8 @@ exports.getAccessToken = function(api, callback) {
                         return;
                     }
                     user.accessToken = res.access_token;
-                    user.expiresAt = Date.now()/1000 + res.expires;     
+                    user.expiresAt = Date.now()/1000 + parseInt(res.expires);
+                    console.log(res);
                     // Updates user with new access token
                     user.save(function(err, user){
                         if (err) {
@@ -84,6 +85,8 @@ exports.getAccessToken = function(api, callback) {
                             callback(undefined)
                             return;
                         } else {
+                            console.log("User access token updated");
+                            console.log(user);
                             callback(user.accessToken);
                         }
                     })
@@ -102,23 +105,31 @@ exports.createNewUser = function(fbId, accessToken, callback) {
         "client_id": process.env.FB_CLIENT_ID,
         "client_secret": process.env.FB_CLIENT_SECRET 
     }, function(err, res){
-        var longAccessToken = res.access_token;
-        var expiresAt = Date.now()/1000 + res.expires;
+        var expiresAt = Date.now()/1000 + parseInt(res.expires);
         var user = new users({
             fbId : fbId,
             apiKey : uuid.v1(),
-            accessToken : longAccessToken,
+            accessToken : res.access_token,
             expiresAt : expiresAt
         });
         user.save(function(err, res) {
             if (err) {
                 if (err.code == 11000) {
-                    callback(null)
+                    users.findOne({fbId:fbId}, function(err,user) {
+                        callback({
+                            fbId : user.fbId,
+                            apiKey : user.apiKey,
+                            exists : true
+                        });
+                    });
                 } else {
                     callback(undefined);
                 }
             } else {
-                callback(res);
+                callback({
+                    fbId : res.fbId,
+                    apiKey : res.apiKey
+                });
             }
         });
     });
