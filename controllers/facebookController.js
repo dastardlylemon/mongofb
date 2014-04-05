@@ -167,7 +167,7 @@ exports.queryHelper = function(req, res, next) {
 	req.queryObj["token"] = req.accessToken;
   	req.queryObj["apiKey"] = req.query.api_key;
 	command_helper(req.queryObj, function(success) {
-		res.send(success);
+		res.json(success);
 	});
-    next();
+	next();
 }
