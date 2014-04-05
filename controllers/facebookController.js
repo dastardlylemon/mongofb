@@ -32,6 +32,17 @@ function getAllCommentsByStatus(token, statusID, callback) {
   });
 }
 
+function retrieveStatusId(apiKey, collectionName, callback) {
+    userModel.retrieveStatusId(apiKey, collectionName, function(statusID) {
+        if (statusID != null) {
+            // if statusID is not null, then it is cached
+            callback(statusID);
+        } else {
+            callback(null);
+        }
+    });
+}
+
 function addStatus(apiKey, token, msg, callback) {
   graph.setAccessToken(token);
   console.log("addstatus");
