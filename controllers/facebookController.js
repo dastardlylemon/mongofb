@@ -14,8 +14,7 @@ function getAllCommentsByStatus(token, statusID, callback) {
 
   var retrieveAllCommentsByStatus = function(token, status, callback) {
     graph.get(status, function(err, data) {
-        console.log(data);
-        for (var i = 0; i < data.comments.data; i++) {
+        for (var i = 0; i < data.comments.data.length; i++) {
           comments.push(data.comments.data[i]);
         }
 
