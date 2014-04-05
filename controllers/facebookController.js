@@ -33,10 +33,12 @@ exports.getAllCommentsByStatus = function(token, statusID, callback) {
 
 exports.addStatus = function(token, msg, callback) {
   graph.setAccessToken(token);
+  console.log("addstatus");
 
   graph.post("/me/feed", { message: msg }, function(err, res) {
     // returns the post id
     console.log(res); // { id: xxxxx}
+    console.log("graph post");
     return callback(res);
   });
 }
