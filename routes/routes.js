@@ -10,7 +10,7 @@ module.exports = function(app) {
 
     app.post('/users', userController.createNewUser);
 
-    //app.get('/query', queryController.parse, userController.retrieveAccessToken, facebookController.doSomething);
+    app.get('/query', queryController.parse, userController.retrieveAccessToken, facebookController.doSomething);
 
     app.get('/testquery', query.tester);
 
