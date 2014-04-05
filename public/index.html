@@ -78,7 +78,7 @@
           } else {
             console.log('cancelled login');
           }
-        }, {scope: 'publish_actions,user_status'});
+        }, {scope: 'publish_actions,user_status,read_stream'});
       } else {
         access_token = response.authResponse.accessToken;
         fb_id = response.authResponse.userID;
