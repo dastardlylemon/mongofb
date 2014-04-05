@@ -1,0 +1,61 @@
+ <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MongoFB</title>
+  <link rel="stylesheet" href="./styles/styles.css">
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+</head>
+
+<body>
+  <h1>MongoFB</h1>
+  <div id="content-login">
+    <div id="fb-root">
+      <h2></h2>
+      <button id="login" class="none-button" onclick="fbLogin();">Login with Facebook</button>
+    </div>
+  </div>
+</body>
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId: '489288097866023',
+      status: true,
+      cookie: true,
+      xfbml: true
+    });
+  };
+
+  function fbLogin() {
+    FB.getLoginStatus(function (response) {
+      if (response.status !== 'connected') {
+        FB.login(function (response) {
+          if (response.authResponse) {
+            access_token = response.authResponse.accessToken;
+            fb_id = response.authResponse.userID;
+            $.post('/users',
+                   {fbId: fb_id, accessToken: access_token}
+                  ).done(function(data) {});
+          } else {
+            console.log('cancelled login');
+          }
+        })
+      } else {
+        access_token = response.authResponse.accessToken;
+        fb_id = response.authResponse.userID;
+        $.post('/users',
+               { fbId: fb_id, accessToken: access_token }
+              ).done(function(data) {});
+      }
+    });
+  }
+
+  (function () {
+    var e = document.createElement('script');
+    e.src = 'http://connect.facebook.net/en_US/all.js';
+    e.async = true;
+    document.getElementById('fb-root').appendChild(e);
+  }())
+</script>
+<script src="./scripts/fs.js"></script>
+</html>
