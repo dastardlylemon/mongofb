@@ -105,6 +105,8 @@ function matchesQuery(query, commentObj) {
         if (message.hasOwnProperty(i)) {
             if (message[i].search(queryObj[i]) !== -1) {
                 continue;
+            } else {
+                return false;
             }
         } else {
             return false;
