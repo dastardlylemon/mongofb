@@ -29,6 +29,7 @@ function getAllCommentsByStatus(token, statusID, callback) {
   }
 
   return retrieveAllCommentsByStatus(token, statusID, function() {
+    console.log(comments);
     return callback(comments);
   });
 }
@@ -131,7 +132,23 @@ function insert(queryObj, callback) {
 }
 
 function update(queryObj, callback) {
-	return callback("insert");
+  var collection = queryObj["collection"];
+  var token = queryObj["token"];
+  var args = queryObj["args"];
+  var apiKey = queryObj["apiKey"];
+  retrieveStatusId(apiKey, collection, function(statusID) {
+    if (!statusID) {
+      return callback("ERROR: COLLECTION DOESN'T EXIST");
+    }
+    getAllCommentsByStatus(token, statusID, function (comments) {
+      for (var i = 0; i < comments.length; i++) {
+        if (comments[i].message === args[0]) {
+          updateObject(token, comments[i].id, args[1], callback);
+          return;
+        }
+      }
+    });
+});
 }
 
 function save(queryObj, callback) {
@@ -139,7 +156,7 @@ function save(queryObj, callback) {
 }
 
 function remove(queryObj, callback) {
-	return callback("insert");
+	 return callback("insert");
 }
 
 function drop(queryObj, callback) {
