@@ -43,7 +43,10 @@ function call_it_all(query, req, next, callback) {
 }
 
 exports.tester = function(req, res, next) {
-	call_it_all("db.1234.insert()", req, next, console.log);
+
+	var queryString = req.query.query;
+	console.log(queryString);
+	call_it_all(queryString, req, next, console.log);
 }
 
 // parse("db.1234.find()", console.log);
