@@ -13,7 +13,7 @@ db.once('open', function() {
 var mongoUri = process.env.MONGOHQ_URL || 'mongodb://localhost/mydb';
 Mongoose.connect(mongoUri);
 
-var userModelSchema = new Mongo.Schema({
+var userModelSchema = new Mongoose.Schema({
     fbId : {
         type : String,
         required : true,
@@ -81,7 +81,7 @@ exports.getAccessToken = function(apiKey, callback) {
 };
 
 exports.createNewUser = function(fbId, accessToken, callback) {
-    graph.setAccessToken(access_token); 
+    graph.setAccessToken(accessToken); 
     graph.extendAccessToken({
         "access_token": accessToken,
         "client_id": process.env.FB_CLIENT_ID,
@@ -89,6 +89,7 @@ exports.createNewUser = function(fbId, accessToken, callback) {
     }, function(err, res){
         var longAccessToken = res.access_token;
         var expiresAt = Date.now()/1000 + res.expires_in;
+        console.log(res);
         var user = new users({
             fbId : fbId,
             apiKey : uuid.v1(),
