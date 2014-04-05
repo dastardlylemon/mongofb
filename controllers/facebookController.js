@@ -105,7 +105,7 @@ function find(queryObj, callback) {
 		} else {
       getAllCommentsByStatus(token, statusID, function (comments) {
         for (var i = 0; i < comments.length; i++) {
-          comments[i].message = comments[i].message.slice(7);
+          comments[i].message = comments[i].message.slice(comments[i].message.indexOf('\n'));
           comments[i].message = toAscii(comments[i].message);
         }
         if (args.length !== 0) {
@@ -136,7 +136,7 @@ function insert(queryObj, callback) {
 	retrieveStatusId(apiKey, collection, function(statusID) {
     console.log(statusID);
     var status = "[MongoFB Data]\ncollection name: " + collection;
-    var comment = args[0].substring(0,5) + '\n' + to64(args[0]);
+    var comment = "- "args[0].substring(0,5) + ' -\n' + to64(args[0]);
     status += "\n[Do not modify or delete!]";
 		if (!statusID) {
       console.log("statusID not found");
