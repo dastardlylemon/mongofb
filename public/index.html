@@ -17,6 +17,7 @@
       </div>
     </div>
     <div id="api-key" style="display: none">
+      <h4>Grab the client <a href="https://github.com/thecalvinchan/mongofb_client">here</a>, add your API key to <code>config.json</code>, and run it via <code>node mongofb.js</code><br><br>
       <h3>Your MongoFB API Key</h3>
       <div id="key-field"></div>
       <br>
@@ -29,7 +30,7 @@
         <span>db.</span>COLLECTION_NAME<span>.find(</span>{"KEY": "VALUE"}<span>)</span>
       </div>
       <div class="sample">
-        <span>db.</span>COLLECTION_NAME<span>.update(</span>{"KEY": "VALUE"}<span>)</span>
+        <span>db.</span>COLLECTION_NAME<span>.update("find:"</span>{"KEY": "VALUE"}<span>,"replace:"</span>{"KEY": "VALUE"}<span>)</span>
       </div>
       <div class="sample">
         <span>db.</span>COLLECTION_NAME<span>.remove(</span>{"KEY": "VALUE"}<span>)</span>
@@ -37,7 +38,6 @@
       <div class="sample">
         <span>db.</span>COLLECTION_NAME<span>.remove(</span>{"KEY": "VALUE"}<span>)</span>
       </div>
-      <h4>Make sure to authenticate with your API key each time!</h4>
     </div>
   </div>
   <div id="content-desc">

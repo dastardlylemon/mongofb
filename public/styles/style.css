@@ -50,6 +50,12 @@ b {
   font-weight: 700;
 }
 
+a {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid #fff;
+}
+
 html, body {
   font-family: 'Montserrat', 'Helvetica', Arial, sans-serif;
 }
@@ -172,7 +178,7 @@ h3 {
   font-size: 13pt;
   background-color: #3a4a90;
   padding: 10px;
-  width: 500px;
+  width: 800px;
   border-radius: 10px;
   box-shadow: 0 -3px #2b355d;
   margin: 0 auto 20px auto;
@@ -180,4 +186,9 @@ h3 {
 
 .sample span {
   opacity: 0.5;
+}
+
+code {
+  font-family: 'Inconsolata';
+  font-size: 13pt;
 }
