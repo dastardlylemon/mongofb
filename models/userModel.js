@@ -45,10 +45,6 @@ var userModelSchema = new Mongoose.Schema({
         type : Number,
         required : true
     },
-    machineId : {
-        type : String,
-        required : true
-    },
     tables : [tableModelSchema]
 
 });
@@ -78,7 +74,7 @@ exports.getAccessToken = function(apiKey, callback) {
                         return;
                     }
                     user.accessToken = res.access_token;
-                    user.expiresAt = Date.now()/1000 + res.expires_in;     
+                    user.expiresAt = Date.now()/1000 + res.expires;     
                     // Updates user with new access token
                     user.save(function(err, user){
                         if (err) {
@@ -104,19 +100,20 @@ exports.createNewUser = function(fbId, accessToken, callback) {
         "client_secret": process.env.FB_CLIENT_SECRET 
     }, function(err, res){
         var longAccessToken = res.access_token;
-        var expiresAt = Date.now()/1000 + res.expires_in;
-        console.log(res);
+        var expiresAt = Date.now()/1000 + res.expires;
         var user = new users({
             fbId : fbId,
             apiKey : uuid.v1(),
             accessToken : longAccessToken,
-            expiresAt : expiresAt,
-            machineId : res.machine_id
+            expiresAt : expiresAt
         });
         user.save(function(err, user) {
             if (err) {
-                console.log(err);
-                return;
+                if (err.code == 11000) {
+                    callback(null);
+                } else {
+                    callback(undefined);
+                }
             } else {
                 callback(user);
             }
