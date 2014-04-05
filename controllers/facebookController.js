@@ -26,4 +26,10 @@ exports.getAllCommentsByStatus = function(token, statusID, callback) {
 
 exports.addCommentToStatus = function(token, statusID, msg, callback) {
   graph.setAccessToken(token);
+
+  graph.post("me/feed", msg, function(err, res) {
+    // returns the post id
+    console.log(res); // { id: xxxxx}
+    callback(res);
+  });
 }
