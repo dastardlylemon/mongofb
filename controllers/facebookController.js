@@ -185,67 +185,48 @@ function insert(queryObj, callback) {
 	});
 }
 
-function update(queryObj, callback) {
-	console.log("update");
-  var collection = queryObj["collection"];
-  var apiKey = queryObj["apiKey"];
-  var token = queryObj["token"];
-  var args = queryObj["args"];
+// function update(queryObj, callback) {
+// 	console.log("update");
+//   var collection = queryObj["collection"];
+//   var apiKey = queryObj["apiKey"];
+//   var token = queryObj["token"];
+//   var args = queryObj["args"];
 
-  //split args into find query and replace object
-  //db.collection.update({"key":"value"}, {"replaced":"value"});
-  //gonna count some braces
-  var count = 0;
-  //must hit first brace first;
-  var encounter = false;
-  var findArgs = "";
-  var replaceArgs = "";
-  for (var i = 0; i < args.length; i++) {
-    if (args[i] == '{') {
-      count ++;
-      encounter = true;
-    } else if (args[i] == '}') {
-      count --;
-    }
+//   //split args into find query and replace object
+//   //db.collection.update({"key":"value"}, {"replaced":"value"});
+//   //gonna count some braces
 
-    if (encounter && count == 0) {
-      findArgs = args.slice(0, i);
-      replaceArgs = args.slice(i+1);
-      break;
-    }
-  }
+//   console.log(findArgs, replaceArgs);
 
-  console.log(findArgs, replaceArgs);
+//   find(queryObj, function(comments) {
+//     //remove all
+//     console.log(comments);
+//     if (comments.length == 0) {
+//       console.log("nothing to update");
+//       callback({
+//           documentUpdated: false
+//       });
+//       return;
+//     }
+//     callback(comments);
+//     for (var i = 0; i < comments.length; i++) {
 
-  find(queryObj, function(comments) {
-    //remove all
-    console.log(comments);
-    if (comments.length == 0) {
-      console.log("nothing to update");
-      callback({
-          documentUpdated: false
-      });
-      return;
-    }
-    callback(comments);
-    for (var i = 0; i < comments.length; i++) {
-
-      try {
-              //comments[i].message = comments[i].message.slice(comments[i].message.indexOf('\n'));
-              comments[i].message = JSON.parse(toAscii(comments[i].message));
-          } catch(e) {
-              comments[i].message = {};
-          }
-      //function deleteObject(token, objectID, callback) 
-      // deleteObject(token, comments[i].id, function() {
-      //   console.log("object deleted");
-      //     callback({
-      //         documentUpdated: true
-      //     });
-      // });
-    }
-  });
-}
+//       try {
+//               //comments[i].message = comments[i].message.slice(comments[i].message.indexOf('\n'));
+//               comments[i].message = JSON.parse(toAscii(comments[i].message));
+//           } catch(e) {
+//               comments[i].message = {};
+//           }
+//       //function deleteObject(token, objectID, callback) 
+//       // deleteObject(token, comments[i].id, function() {
+//       //   console.log("object deleted");
+//       //     callback({
+//       //         documentUpdated: true
+//       //     });
+//       // });
+//     }
+//   });
+// }
 
 function save(queryObj, callback) {
 	return callback("insert");
