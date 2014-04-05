@@ -71,3 +71,88 @@ exports.updateObject = function(token, objectID, msg, callback) {
     return callback(res);
   });
 }
+
+function find(queryObj, callback) {
+	/*
+	var collection = queryObj["collection"];
+	var token = queryObj["token"];
+	var args = queryObj["args"];
+	return getStatusID(collection, function(id) {
+		var matchesQuery = function(query, commentObj) {
+			var message = commentObj["message"];
+			return (message.search(query) !== -1);
+		}
+
+		return getAllCommentsByStatus(token, id, function (comments) {
+			if (args.length !== 0) {
+				comments.filter(function (com) {
+					return matchesQuery(args[0], com);
+				});
+			}
+			return callback(comments);
+		});
+	});
+	*/
+	return callback("find");
+}
+
+function insert(queryObj, callback) {
+	console.log("insert");
+	var collection = queryObj["collection"];
+	var token = queryObj["token"];
+	var args = queryObj["args"];
+/*
+	return getAllStatuses(function(statuses) {
+		//if collection in statuses, use that status, else create new status
+		statuses.filter(function (status) {
+			return (collection === status);
+		}
+		if (statuses.length !== 0) {
+			return getStatusID(statuses[0], ...);
+		}
+		return createStatus(collection, ...);
+	});
+		*/
+	addStatus(token, collection, callback);
+}
+
+function update(queryObj, callback) {
+	return callback("insert");
+}
+
+function save(queryObj, callback) {
+	return callback("insert");
+}
+
+function remove(queryObj, callback) {
+	return callback("insert");
+}
+
+function drop(queryObj, callback) {
+	return callback("insert");
+}
+
+function command_helper(queryObj, callback) {
+	console.log("cmdhelp");
+	command = queryObj["command"];
+	switch (command) {
+		case "find": //get all comments
+			return find(queryObj, callback);
+		case "insert":
+			return insert(queryObj, callback);
+		case "update":
+			return update(queryObj, callback);
+		case "save":
+			return save(queryObj, callback);
+		case "remove":
+			return remove(queryObj, callback);
+		case "drop":
+			return drop(queryObj, callback);
+	}
+	return send_error(callback);
+}
+
+exports.queryHelper = function(req, res, next) {
+	req.queryObj["token"] = req.accessToken;
+	command_helper(req.queryObj, console.log);
+}

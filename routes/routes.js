@@ -12,7 +12,7 @@ module.exports = function(app) {
 
     app.get('/query', queryController.parse, userController.retrieveAccessToken, facebookController.doSomething);
 
-    app.get('/testquery', query.tester);
+    app.get('/testquery', query.tester, userController.retrieveAccessToken, facebookController.queryHelper);
 
     //app.get('/testfacebook', userController.retrieveAccessToken, facebookController.testFacebook);
 
