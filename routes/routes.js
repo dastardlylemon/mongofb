@@ -9,6 +9,6 @@ module.exports = function(app) {
 
     //app.get('/query', queryController.parse, userController.retrieveAccessToken, facebookController.doSomething);
 
-    app.get('/testfacebook', userController.retrieveAccessToken, facebookController.testFacebook);
+    //app.get('/testfacebook', userController.retrieveAccessToken, facebookController.testFacebook);
 
 }
